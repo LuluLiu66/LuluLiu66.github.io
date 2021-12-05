@@ -1,0 +1,409 @@
+<!-- 思路：
+	 1、初始化格局
+	 2、进行拖动操作
+	 3、判断是否完成任务
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <link rel="icon" type="image/x-ico" href="../../img/ico.JPG"/>
+     <title>pushBox</title>
+     <style type="text/css">
+         *{
+             margin: 0;
+             padding: 0;
+             box-sizing:border-box;
+         }
+         body{
+             background: #ccc;
+         }
+         .container{
+             width: 560px;
+             height: 560px;
+             background: skyblue;
+             margin:30px auto;
+         }
+         .box{
+             width: 80px;
+             height: 80px;
+             border: 1px solid black;
+             float: left;
+         }
+         .bg1{
+             background: url('../../img/pushBox/1.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg2{
+             background: url('../../img/pushBox/2.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg3{
+             background: url('../../img/pushBox/3.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg4{
+             background: url('../../img/pushBox/4.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg5{
+             background: url('../../img/pushBox/5.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg6{
+             background: url('../../img/pushBox/6.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg7{
+             background: url('../../img/pushBox/7.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg8{
+             background: url('../../img/pushBox/8.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .bg9{
+             background: url('../../img/pushBox/9.jpg') no-repeat;
+             background-size: 80px 80px;
+         }
+         .people{
+             background: url('../../img/pushBox/people.png') no-repeat;
+             background-size: 80px 80px;
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+         <div class="box"></div>
+     </div>
+     <script type="text/javascript">
+         var boxs = document.getElementsByClassName('box');
+         var container = document.getElementsByClassName('container');
+         var people={N:0,X:0,Y:0};
+         //1、初始化，随机产生箱子的位置
+         function initial(){
+             for(var ii = 0;ii<boxs.length;ii++){
+                 boxs[ii].setAttribute('isBlock',false);
+                 /*console.log(boxs[ii].getAttribute('isBlock'));*/
+             }
+             var s = [{N:0,X:0,Y:0}];
+             var i = 0;
+             do{
+                 var rand = parseInt(Math.random()*49);
+                 var randX = parseInt(rand/7);
+                 var randY = parseInt(rand%7);
+                 var isConflict = false;
+                 for(var l = 0;l<s.length;l++){
+                     if(rand === s[l].N){
+                         isConflict = true;
+                         break;
+                     }
+                 }
+                 if((randX>0)&&(randX<6)&&(randY>0)&&(randY<6)&&(!isConflict)){
+                     var tempRand = {}; 
+                     tempRand.N = rand;
+                     tempRand.X = randX;
+                     tempRand.Y = randY;
+                     s[i] = tempRand;
+                     i++;
+                 }
+             }while(i<9);
+             for(var k=0;k<boxs.length;k++){
+                 boxs[k].className = "box";
+             }
+             for(var j=0;j<s.length;j++){
+             boxs[s[j].N].className = "box bg"+(j+1);
+             boxs[s[j].N].setAttribute('isBlock',true);
+             }
+             boxs[people.N].className = "box people";
+             console.log(s);
+             return s;
+         }
+         //2、进行拖动操作
+         window.onkeydown = function(e){
+             switch(e.keyCode){
+                 //up
+                 case 38:{
+                     judgeTop();
+                     break;}
+                 //down
+                 case 40:{	
+                     judgeDown();
+                     break;}
+                 //left
+                 case 37:{		
+                     judgeLeft();
+                     break;
+                 }
+                 //right
+                 case 39:{
+                     judgeRight();
+                     break;}
+             }
+             if(gameWin()){
+                 return false;
+             }
+         }
+         //judgeLeft
+         function judgeLeft(){
+                 //第一种情况：小人在最左边了
+                     if(people.Y === 0){
+                         return false;
+                     }else{
+                         var befoIsblock = boxs[people.N-1].getAttribute('isBlock');
+                         //第二种情况：小人前面没有障碍物图片
+                         befoIsblock = TransBool(befoIsblock);
+                         if(!befoIsblock){
+                             var lastPep = people.N;
+                             people.Y --;
+                             people.N = people.X*7+people.Y;
+                             boxs[lastPep].className="box";
+                             boxs[people.N].className = "box people";}else{
+                                 //第三种情况：小人前面有障碍物图片
+                                 //第三种情况 的 第一种：小人在左边第二个位置，障碍物图片在最左边
+                                 if(people.Y === 1){
+                                     return false;
+                                 }else{
+                                     var befobefoIsblock = boxs[people.N-2].getAttribute('isBlock');
+                                     befobefoIsblock = TransBool(befobefoIsblock);
+                                     //第三种情况 的 第二种：小人前面有障碍图片，障碍图片的左边还有障碍图片
+                                     if(befobefoIsblock === true){
+                                         return false;
+                                     }else{
+                                         //第三种情况 的 第三种：小人前面有障碍图片，障碍图片的左边没有障碍图片
+                                         boxs[people.N-1].setAttribute('isBlock','false');
+                                         var tempClass = boxs[people.N-1].className;
+                                         boxs[people.N-1].className = 'box';
+                                         boxs[people.N-2].setAttribute('isBlock','true');
+                                         boxs[people.N-2].className = tempClass;
+                                         //与第二种情况代码相同
+                                         var lastPep = people.N;
+                                         people.Y --;
+                                         people.N = people.X*7+people.Y;
+                                         boxs[lastPep].className="box";
+                                         boxs[people.N].className = "box people";
+                                     }
+                                 }
+                             }
+                     }
+         }
+         //judgeRight
+         function judgeRight(){
+             //第一种情况：小人在最右边了
+                     if(people.Y === 6){
+                         return false;
+                     }else{
+                         var befoIsblock = boxs[people.N+1].getAttribute('isBlock');
+                         //第二种情况：小人前面没有障碍物图片
+                         befoIsblock = TransBool(befoIsblock);
+                         if(!befoIsblock){
+                             var lastPep = people.N;
+                             people.Y ++;
+                             people.N = people.X*7+people.Y;
+                             boxs[lastPep].className="box";
+                             boxs[people.N].className = "box people";}else{
+                                 //第三种情况：小人前面有障碍物图片
+                                 //第三种情况 的 第一种：小人在左边第二个位置，障碍物图片在最左边
+                                 if(people.Y === 5){
+                                     return false;
+                                 }else{
+                                     var befobefoIsblock = boxs[people.N+2].getAttribute('isBlock');
+                                     befobefoIsblock = TransBool(befobefoIsblock);
+                                     //第三种情况 的 第二种：小人前面有障碍图片，障碍图片的左边还有障碍图片
+                                     if(befobefoIsblock === true){
+                                         return false;
+                                     }else{
+                                         //第三种情况 的 第三种：小人前面有障碍图片，障碍图片的左边没有障碍图片
+                                         boxs[people.N+1].setAttribute('isBlock','false');
+                                         var tempClass = boxs[people.N+1].className;
+                                         boxs[people.N+1].className = 'box';
+                                         boxs[people.N+2].setAttribute('isBlock','true');
+                                         boxs[people.N+2].className = tempClass;
+                                         //与第二种情况代码相同
+                                         var lastPep = people.N;
+                                         people.Y ++;
+                                         people.N = people.X*7+people.Y;
+                                         boxs[lastPep].className="box";
+                                         boxs[people.N].className = "box people";
+                                     }
+                                 }
+                             }
+                     }
+         }
+         //judgeTop
+         function judgeTop(){
+             //第一种情况：小人在最上面了
+                     if(people.X === 0){
+                         return false;
+                     }else{
+                         var topBoxN = (people.X-1)*7+people.Y;
+                         var befoIsblock = boxs[topBoxN].getAttribute('isBlock');
+                         //第二种情况：小人上面没有障碍物图片
+                         befoIsblock = TransBool(befoIsblock);
+                         if(!befoIsblock){
+                             var lastPep = people.N;
+                             people.X--;
+                             people.N = people.X*7+people.Y;
+                             boxs[lastPep].className="box";
+                             boxs[people.N].className = "box people";}else{
+                                 //第三种情况：小人前面有障碍物图片
+                                 //第三种情况 的 第一种：小人在上面第二个位置，障碍物图片在最上面
+                                 if(people.X === 1){
+                                     return false;
+                                 }else{
+                                     var toptopBoxN = (people.X-2)*7+people.Y;
+                                     var befobefoIsblock = boxs[toptopBoxN].getAttribute('isBlock');
+                                     befobefoIsblock = TransBool(befobefoIsblock);
+                                     //第三种情况 的 第二种：小人上面有障碍图片，障碍图片的上面还有障碍图片
+                                     if(befobefoIsblock === true){
+                                         return false;
+                                     }else{
+                                         //第三种情况 的 第三种：小人前面有障碍图片，障碍图片的左边没有障碍图片
+                                         boxs[topBoxN].setAttribute('isBlock','false');
+                                         var tempClass = boxs[topBoxN].className;
+                                         boxs[topBoxN].className = 'box';
+                                         boxs[toptopBoxN].setAttribute('isBlock','true');
+                                         boxs[toptopBoxN].className = tempClass;
+                                         //与第二种情况代码相同
+                                         var lastPep = people.N;
+                                         people.X --;
+                                         people.N = people.X*7+people.Y;
+                                         boxs[lastPep].className="box";
+                                         boxs[people.N].className = "box people";
+                                     }
+                                 }
+                             }
+                     }
+         }
+         //judgeDown
+         function judgeDown(){
+             //第一种情况：小人在最下面了
+                     if(people.X === 6){
+                         return false;
+                     }else{
+                         var downBoxN = (people.X+1)*7+people.Y;
+                         var befoIsblock = boxs[downBoxN].getAttribute('isBlock');
+                         //第二种情况：小人下面没有障碍物图片
+                         befoIsblock = TransBool(befoIsblock);
+                         if(!befoIsblock){
+                             var lastPep = people.N;
+                             people.X++;
+                             people.N = people.X*7+people.Y;
+                             boxs[lastPep].className="box";
+                             boxs[people.N].className = "box people";}else{
+                                 //第三种情况：小人下面有障碍物图片
+                                 //第三种情况 的 第一种：小人在下面第二个位置，障碍物图片在最下面
+                                 if(people.X === 5){
+                                     return false;
+                                 }else{
+                                     var downdownBoxN = (people.X+2)*7+people.Y;
+                                     var befobefoIsblock = boxs[downdownBoxN].getAttribute('isBlock');
+                                     befobefoIsblock = TransBool(befobefoIsblock);
+                                     //第三种情况 的 第二种：小人下面有障碍图片，障碍图片的下面还有障碍图片
+                                     if(befobefoIsblock === true){
+                                         return false;
+                                     }else{
+                                         //第三种情况 的 第三种：小人下面有障碍图片，障碍图片的下边没有障碍图片
+                                         boxs[downBoxN].setAttribute('isBlock','false');
+                                         var tempClass = boxs[downBoxN].className;
+                                         boxs[downBoxN].className = 'box';
+                                         boxs[downdownBoxN].setAttribute('isBlock','true');
+                                         boxs[downdownBoxN].className = tempClass;
+                                         //与第二种情况代码相同
+                                         var lastPep = people.N;
+                                         people.X ++;
+                                         people.N = people.X*7+people.Y;
+                                         boxs[lastPep].className="box";
+                                         boxs[people.N].className = "box people";
+                                     }
+                                 }
+                             }
+                     }
+         }
+         //将字符创'false''true'转换成布尔类型
+         function TransBool(option){
+             if(option==='true'){
+                 return true;
+             }else{
+                 return false;
+             }
+         }
+         //判断dom对象中是否有一个类名
+         function judgeClass(dom1,class1){
+             var classname1 = dom1.className;
+             if((classname1.indexOf(class1))>=0){
+                 return true;
+             }else{
+                 return false;
+             }
+         }
+         //判断游戏是否赢了
+          function gameWin(){
+             var N;
+             var correct;
+             var i = 1;
+             for(var hori=2;hori<5;hori++){
+             for(var verti=2;verti<5;verti++){
+                 N = hori*7+verti;
+                 correct = judgeClass(boxs[N],'bg'+i);
+                 if(!correct){
+                     return false;
+                 }
+                 i++;
+             }
+             }
+             alert("恭喜你，游戏闯关成功！");
+             return true;
+         }
+         initial();
+     </script>
+ </body>
+ </html>

@@ -1,0 +1,5 @@
+.container {
+    background-image: url('../img/bg1.jpeg');
+    background-size: cover;
+    margin: 32px;
+}

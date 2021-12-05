@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="icon" type="image/x-ico" href="../../img/ico.JPG"/>
+	<title>hitMouse</title>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding: 0;
+			box-sizing:border-box;
+		}
+		body{
+			background: #ccc;
+		}
+		.container{
+			width: 600px;
+			height: 600px;
+			background: skyblue;
+			margin:10px auto;
+			position: relative;
+		}
+		.box{
+			width: 60px;
+			height: 60px;
+			border: 1px solid black;
+			float:left;
+		}
+		.box.active{
+			background:url('../../img/hitMouse/mouse.jpg') no-repeat;
+			background-size: 60px 60px;
+		}
+		@keyframes slideOut{
+			0%{
+				transform: scale(2);
+			}
+			100%{
+				transform: scale(1);
+			}
+		}
+		.box.dead{
+			animation:slideOut 1s;
+		}
+		.mask{
+			width: 60px;
+			height: 60px;
+			opacity: 0.7;
+			border-radius: 50%;
+			background: url('../../img/hitMouse/cat.jpg');
+			background-size: 60px 60px;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.grade{
+			width: 220px;
+			height: 30px;
+			margin:0 auto;
+			line-height: 30px;
+		}
+		.grade:children{
+			margin-right: 10px;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<div class="grade">
+		<span>请选择难度:</span>
+		<input type="button" class="grade1" value="简单" />
+		<input type="button" class="grade2" value="中等" />
+		<input type="button" class="grade3" value="困难" />
+	</div>
+	<div class="container">
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="mask"></div>
+	</div>
+
+<script type="text/javascript">
+/*
+	思路：
+	1、让小猫跟随鼠标
+	2、定时器，随机产生老鼠
+	3、游戏结束判断
+*/	
+var container = document.getElementsByClassName('container')[0];
+var boxs = document.getElementsByClassName('box');
+var mask = document.getElementsByClassName('mask')[0];
+var gameover = false;
+var clickX = 0;
+var clickY = 0;
+var minX=0;
+var minY=0;
+var maxX=0;
+var maxY=0;
+var rand=0;
+var timer=null;
+var score=0;
+var isClick=true;
+var grade;
+var grade1=document.getElementsByClassName('grade1')[0];
+var grade2=document.getElementsByClassName('grade2')[0];
+var grade3=document.getElementsByClassName('grade3')[0];
+
+grade1.onclick=function(){
+	grade=3000;
+	mainPro();
+}
+
+grade2.onclick=function(){
+	grade=2000;
+	mainPro();
+}
+
+grade3.onclick=function(){
+	grade=1800;
+	mainPro();
+}
+container.onmousemove = function(e){
+	var event = e || window.event;
+	var pageX = event.pageX || event.clientX + document.documentElement.scrollLeft;
+	var pageY = event.pageY || event.clientY + document.documentElement.scrollTop;
+	var containerX = pageX - container.offsetLeft;
+	var containerY = pageY - container.offsetTop;
+	var maskX = containerX - mask.offsetWidth/2;
+	var maskY = containerY - mask.offsetHeight/2;
+	if(maskX<0){
+		maskX = 0;
+	}
+	if(maskX > container.offsetWidth - mask.offsetWidth){
+		maskX = container.offsetWidth - mask.offsetWidth;
+	}
+	 if (maskY < 0) {
+            maskY = 0;
+    }
+     if (maskY > container.offsetHeight - mask.offsetHeight) {
+            maskY = container.offsetHeight - mask.offsetHeight;
+    }
+    mask.style.left = maskX + "px";
+    mask.style.top = maskY + "px";
+}
+
+function mainPro(){
+	timer = setInterval(function(){
+	if((!gameover) && isClick){
+	rand = parseInt(Math.random()*100);
+	for(var i= 0;i<boxs.length;i++){
+		boxs[i].className = "box";
+	}
+	boxs[rand].className = "box active";	
+	minX = (rand%10)*60;
+	maxX=((rand%10)+1)*60;
+	minY=(parseInt(rand/10))*60;
+	maxY=(parseInt(rand/10)+1)*60;
+	/*console.log('minX'+minX+"maxX"+maxX+"minY"+minY+"maxY"+maxY);*/
+	isClick = false;
+}else{
+	clearInterval(timer);
+	alert('欧欧~你输了！得分：'+score+'分');
+}
+},grade);
+}
+
+
+
+container.onclick=function(e){
+	isClick = true;
+	var event = e || window.event;
+	var pageX = event.pageX || event.clientX + document.documentElement.scrollLeft;
+	var pageY = event.pageY || event.clientY + document.documentElement.scrollTop;
+	clickX = pageX - container.offsetLeft;
+	clickY = pageY - container.offsetTop;
+	/*console.log(clickX+"..............."+clickY);*/
+	if((clickX>minX)&&(clickX<maxX)&&(clickY>minY)&&(clickY<maxY)){
+		boxs[rand].className = "box dead";
+		score++;
+	}else{
+		gameover=true;
+	}
+}
+
+</script>
+</body>
+</html>
