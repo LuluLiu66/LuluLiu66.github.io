@@ -1,5 +1,14 @@
 .container {
-    background-image: url('../img/bg1.jpeg');
+    /* background-image: url('../img/bg1.jpeg'); */
+    background-color: ＃F1FAFA;
     background-size: cover;
     margin: 32px;
+}
+h5 {
+    font-size: 16px !important;
+    font-weight: normal;
+}
+h6 {
+    font-size: 16px !important;
+    font-weight: normal;
 }
