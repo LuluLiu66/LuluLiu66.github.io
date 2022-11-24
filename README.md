@@ -1,1 +1,1 @@
-# welcome to Lulu's page
+# Welcome to Lulu's page
