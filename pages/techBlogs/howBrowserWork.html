@@ -24,17 +24,38 @@
     <div>
         <h3>1. navigation</h3>
         <div>
-            DNS Lookup(only at the first time of visiting) <br />
-            TCP (Transmission Control Protocol) Handshake <br />
-            TLS negotiation: for secure connections established over HTTPS, another handshake is needed. <br/>
+            DNS Lookup - resolving the web address, only at the first time of visiting), between Browser and DNS Server <br />
+            TCP (Transmission Control Protocol) - between browser and the server which hold resource, via a three-way handshake(SYN=>SYN-ACK=>ACK)<br />
+            TLS negotiation - for secure connections established over HTTPS, another handshake is needed. TLS negotiation determins which cipher will be used to encrypt the communication. <br/>
+            <ul>
+                <li>1. Clienty says hello</li>
+                <li>2. Server hello message and certificate</li>
+                <li>3. Authentication</li>
+                <li>4. The premaster secret</li>
+                <li>5. Private kay used. The server decrypts the premaster secret</li>
+                <li>6. Session keys created. From the client random, the server random, premaster secret</li>
+                <li>7. Client finished.</li>
+                <li>8. Server finished.</li>
+                <li>9. Secure symmetric encryption achieved</li>
+            </ul>
         </div>
         <h3>2. data fetching</h3>
         <div>
-            HTTP Request: an initial HTTP GET request<br />
+            HTTP Request - an initial HTTP GET request, request for the HTML document, using HTTP protocol<br />
+            The method - post, get, put, patch, delete etc <br />
+            URI - stands for Uniform Resource Identifier. make up of 5 parts: scheme, authority, path, query, fragment<br/>
+            Request header fields - 
+            Respnse header fileds - 
+            HTTP Payload - 
+            HTTP Respnse - 
+            Status code - 
+            TCP Slow Start and congestion algorithms<br/>
+            "Slow Start" is an algorithm that balances the speed of a network connection. The first data packet will be 14kb (or smaller) and the way it works is that the amount of data transmitted is increased gradually until a predermined threshhold is reached.<br/>
+            "congestion algorithms" is since the connection has a limited capacity, if the server sends too many packets too quickly, they will be dropped, and the client won't send any ACK.
         </div>
         <h3>3. parsing the HTML</h3>
         <div>
-            
+            ...
         </div>
     </div>
 </body>
